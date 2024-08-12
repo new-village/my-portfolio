@@ -2,7 +2,8 @@ import React from 'react';
 import './App.css';
 import SideBar from './components/SideBar';
 import HomePage from './components/HomePage';
-import CnpsList from './components/CorporateList';
+import CorporateList from './components/CorporateList';
+import CorporateDetail from './components/CorporateDetail';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -15,7 +16,8 @@ function App() {
         <div className="container">
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/cnps" element={<CnpsList />} />
+            <Route path="/corporate" element={<CorporateList />} />
+            <Route path="/corporate/:corporateNumber" element={<CorporateDetail />} />
           </Routes>
         </div>
       </div>

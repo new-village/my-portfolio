@@ -80,3 +80,11 @@ nav ul li:hover {
     margin-right: 20px;
     margin-left: 20px;
 }
+
+.card-margin-right {
+    margin-right: 10px;
+}
+
+.card-margin-left {
+    margin-left: 10px;
+}

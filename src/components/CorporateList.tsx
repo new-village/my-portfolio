@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Papa from 'papaparse';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
-const CnpsList: React.FC = () => {
+function CorporateList() {
   const [data, setData] = useState<string[][]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const rowsPerPage = 10;
+  const rowsPerPage = 15;
 
   useEffect(() => {
     fetch('data.csv')
@@ -32,6 +32,7 @@ const CnpsList: React.FC = () => {
   return (
     <div>
       <h1>法人リスト</h1>
+      <hr/>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -46,7 +47,7 @@ const CnpsList: React.FC = () => {
         <tbody>
           {currentData.map((row, rowIndex) => (
             <tr key={rowIndex}>
-              <td>{row[1]}</td>
+              <td><a href={`./corporate/${row[1]}`}>{row[1]}</a></td>
               <td>{row[6]}</td>
               <td>{row[15]}</td>
               <td>{row[9]}</td>
@@ -68,4 +69,4 @@ const CnpsList: React.FC = () => {
   );
 };
 
-export default CnpsList;
+export default CorporateList;
