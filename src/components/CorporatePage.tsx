@@ -5,7 +5,7 @@ import { Card, Button, Table, Breadcrumb } from 'react-bootstrap';
 
 function CorporatePage() {
   const [data, setData] = useState<string[][]>([]);
-  const [filtered, setFilteredData] = useState<string[][]>([]);
+  const [filteredData, setFilteredData] = useState<string[][]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedCorporate, setSelectedCorporate] = useState<string[][] | null>(null);
   const location = useLocation();
@@ -43,6 +43,10 @@ function CorporatePage() {
     setSelectedCorporate([row]);
   };
 
+  const handleBreadcrumbClick = () => {
+    setSelectedCorporate(null);
+  };
+
   const startIndex = (currentPage - 1) * rowsPerPage;
   const paginatedData = data.slice(startIndex, startIndex + rowsPerPage);
 
@@ -52,7 +56,7 @@ function CorporatePage() {
         selectedCorporate.map((row, rowIndex) => (
           <div key={rowIndex}>
           <Breadcrumb>
-              <Breadcrumb.Item href="./corporate">法人リスト</Breadcrumb.Item>
+              <Breadcrumb.Item onClick={handleBreadcrumbClick}>法人リスト</Breadcrumb.Item>
               <Breadcrumb.Item active>法人詳細</Breadcrumb.Item>
           </Breadcrumb>
           <h1>{row[6]}</h1>
