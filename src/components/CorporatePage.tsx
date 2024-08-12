@@ -1,11 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Papa from 'papaparse';
-import { Card, Button, Table, Breadcrumb } from 'react-bootstrap';
+import { Card, Button, Table, Breadcrumb, Form } from 'react-bootstrap';
+import _ from 'lodash';
 
 function CorporatePage() {
   const [data, setData] = useState<string[][]>([]);
+  const [filteredData, setFilteredData] = useState<string[][]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedCorporate, setSelectedCorporate] = useState<string[][] | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchType, setSearchType] = useState<string>('name');
   const rowsPerPage = 10;
 
   useEffect(() => {
@@ -16,6 +20,29 @@ function CorporatePage() {
         setData(parsedData);
       });
   }, []);
+
+  const debouncedSearch = useCallback(
+    _.debounce((query: string, type: string) => {
+      if (query) {
+        let filtered;
+        if (type === 'name') {
+          filtered = data.filter(row => row[6] && row[6].includes(query));
+        } else if (type === 'corporate_number') {
+          filtered = data.filter(row => row[1] && row[1].includes(query));
+        } else {
+          filtered = data.filter(row => row.some(cell => cell && cell.includes(query)));
+        }
+        setFilteredData(filtered);
+      } else {
+        setFilteredData([]);
+      }
+    }, 300),
+    [data]
+  );
+
+  useEffect(() => {
+    debouncedSearch(searchQuery, searchType);
+  }, [searchQuery, searchType, debouncedSearch]);
 
   const handleNextPage = () => {
     setCurrentPage(prevPage => prevPage + 1);
@@ -33,8 +60,16 @@ function CorporatePage() {
     setSelectedCorporate(null);
   };
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSearchTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSearchType(event.target.value);
+  };
+
   const startIndex = (currentPage - 1) * rowsPerPage;
-  const paginatedData = data.slice(startIndex, startIndex + rowsPerPage);
+  const paginatedData = searchQuery ? filteredData : data.slice(startIndex, startIndex + rowsPerPage);
 
   return (
     <div>
@@ -80,7 +115,28 @@ function CorporatePage() {
         ))
       ) : (
         <div>
-          <h1>法人リスト</h1>
+          <div className='flexbox'>
+            <h1>法人リスト</h1>
+            <div className='forms'>
+              <Form.Select
+                as="select"
+                value={searchType}
+                onChange={handleSearchTypeChange}
+                className="search-type"
+              >
+                <option value="name">法人名</option>
+                <option value="corporate_number">法人番号</option>
+                <option value="all">指定なし</option>
+              </Form.Select>
+              <Form.Control
+                type="text"
+                placeholder="検索..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="search-form"
+              />
+            </div>
+          </div>
           <hr/>
           <Table striped bordered hover>
             <thead>

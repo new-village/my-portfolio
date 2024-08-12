@@ -49,7 +49,7 @@ nav ul li{
 
 nav ul a {
     color: white;
-    font-size: 20px;
+    font-size: 18px;
     text-decoration: none;
 }
 
@@ -87,4 +87,24 @@ nav ul li:hover {
 
 .card-margin-left {
     margin-left: 10px;
+}
+
+.flexbox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.forms {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+  
+.search-form {
+  width: 300px !important;
+}
+
+.search-type {
+  width: 100px !important;
 }
