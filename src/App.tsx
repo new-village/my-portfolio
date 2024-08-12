@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import SideBar from './components/SideBar';
 import HomePage from './components/HomePage';
-import CnpsList from './components/CnpsList';
+import CnpsList from './components/CorporateList';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 

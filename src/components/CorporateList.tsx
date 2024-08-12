@@ -12,7 +12,7 @@ const CnpsList: React.FC = () => {
     fetch('data.csv')
       .then(response => response.text())
       .then(csv => {
-        const parsedData = Papa.parse<string[]>(csv, { header: false }).data;
+        const parsedData = Papa.parse<string[]>(csv, { header: false }).data.slice(1);
         setData(parsedData);
       });
   }, []);
@@ -35,17 +35,23 @@ const CnpsList: React.FC = () => {
       <Table striped bordered hover>
         <thead>
           <tr>
-            {data[0] && data[0].map((header, index) => (
-              <th key={index}>{header}</th>
-            ))}
+            <th>法人番号</th>
+            <th>法人名</th>
+            <th>郵便番号</th>
+            <th>都道府県</th>
+            <th>市区町村</th>
+            <th>街区丁目番地</th>
           </tr>
         </thead>
         <tbody>
           {currentData.map((row, rowIndex) => (
             <tr key={rowIndex}>
-              {row.map((cell, cellIndex) => (
-                <td key={cellIndex}>{cell}</td>
-              ))}
+              <td>{row[1]}</td>
+              <td>{row[6]}</td>
+              <td>{row[15]}</td>
+              <td>{row[9]}</td>
+              <td>{row[10]}</td>
+              <td>{row[11].length > 30 ? row[11].slice(0, 30) + "..." : row[11]}</td>
             </tr>
           ))}
         </tbody>
