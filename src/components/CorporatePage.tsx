@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import Papa from 'papaparse';
-import { useLocation } from 'react-router-dom';
 import { Card, Button, Table, Breadcrumb } from 'react-bootstrap';
 
 function CorporatePage() {
   const [data, setData] = useState<string[][]>([]);
-  const [filteredData, setFilteredData] = useState<string[][]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedCorporate, setSelectedCorporate] = useState<string[][] | null>(null);
-  const location = useLocation();
   const rowsPerPage = 10;
 
   useEffect(() => {
@@ -19,17 +16,6 @@ function CorporatePage() {
         setData(parsedData);
       });
   }, []);
-
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const corporateNumber = queryParams.get('id');
-    if (corporateNumber) {
-      const filtered = data.filter(row => row[1] === corporateNumber);
-      setFilteredData(filtered);
-    } else {
-      setFilteredData([]);
-    }
-  }, [location.search, data]);
 
   const handleNextPage = () => {
     setCurrentPage(prevPage => prevPage + 1);
