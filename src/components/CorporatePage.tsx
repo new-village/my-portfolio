@@ -89,8 +89,9 @@ function CorporatePage() {
               <Card.Text as="div">
                   <ul>
                       <li><strong>法人番号</strong>: {row[1]}</li>
-                      <li><strong>法人名（カナ）</strong>: {row[28]}</li>
+                      <li><strong>法人名（カナ）</strong>: {row[30]}</li>
                       <li><strong>法人名（英）</strong>: {row[24]}</li>
+                      <li><strong>法人格</strong>: {row[31]}</li>
                       <li><strong>登記日</strong>: {row[5]}</li>
                       <li><strong>最終更新日</strong>: {row[4]}</li>
                   </ul>
@@ -103,7 +104,7 @@ function CorporatePage() {
               <Card.Title>所在地情報</Card.Title>
               <Card.Text as="div">
                   <ul>
-                      <li><strong>郵便番号</strong>: {formatPostalCode(row[15])}</li>
+                      <li><strong>郵便番号</strong>: {row[32]}</li>
                       <li><strong>住所</strong>: {formatAddress(row[9], row[10], row[11])}</li>
                       <li><strong>住所（アルファベット）</strong>: {formatAddress(row[26], ", ", row[25])}</li>
                   </ul>
@@ -154,7 +155,7 @@ function CorporatePage() {
                 <tr key={rowIndex} onClick={() => handleRowClick(row)}>
                   <td>{row[1]}</td>
                   <td>{row[6]}</td>
-                  <td>{row[15]}</td>
+                  <td>{row[32]}</td>
                   <td>{row[9]}</td>
                   <td>{row[10]}</td>
                   <td>{row[11].length > 30 ? row[11].slice(0, 30) + "..." : row[11]}</td>
@@ -170,11 +171,6 @@ function CorporatePage() {
       )}
     </div>
   );
-
-  function formatPostalCode(corporateNumber: string): string {
-    const formattedNumber = corporateNumber.replace(/(\d{3})(\d{4})/, '$1-$2');
-    return formattedNumber;
-  }
 
   function formatAddress(address1: string, address2: string, address3: string): string {
       const formattedAddress = address1.trim() !== "" && address3.trim() !== "" ? address1.concat(address2, address3).trim() : "";
