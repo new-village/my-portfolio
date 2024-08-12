@@ -88,12 +88,13 @@ function CorporatePage() {
               <Card.Title>法人概要</Card.Title>
               <Card.Text as="div">
                   <ul>
-                      <li><strong>法人番号</strong>: {row[1]}</li>
+                      <li><strong>法人番号</strong>: <a href={`https://info.gbiz.go.jp/hojin/ichiran?hojinBango=${row[1]}`} target="_blank" rel="noreferrer">{row[1]}</a></li>
                       <li><strong>法人名（カナ）</strong>: {row[30]}</li>
                       <li><strong>法人名（英）</strong>: {row[24]}</li>
                       <li><strong>法人格</strong>: {row[31]}</li>
                       <li><strong>登記日</strong>: {row[5]}</li>
                       <li><strong>最終更新日</strong>: {row[4]}</li>
+                      <li><a href={`https://www.google.com/search?q=${row[6]}+${row[9]}`} target="_blank" rel="noreferrer">Google検索</a></li>
                   </ul>
               </Card.Text>
             </Card.Body>
