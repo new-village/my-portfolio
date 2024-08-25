@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import Papa from 'papaparse';
 import { Card, Button, Table, Breadcrumb, Form } from 'react-bootstrap';
 import _ from 'lodash';
@@ -21,8 +21,8 @@ function CorporatePage() {
       });
   }, []);
 
-  const debouncedSearch = useCallback(
-    _.debounce((query: string, type: string) => {
+  useEffect(() => {
+    const debouncedSearch = _.debounce((query: string, type: string) => {
       if (query) {
         let filtered;
         if (type === 'name') {
@@ -36,13 +36,14 @@ function CorporatePage() {
       } else {
         setFilteredData([]);
       }
-    }, 300),
-    [data]
-  );
-
-  useEffect(() => {
+    }, 300);
+  
     debouncedSearch(searchQuery, searchType);
-  }, [searchQuery, searchType, debouncedSearch]);
+  
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [searchQuery, searchType, data]);
 
   const handleNextPage = () => {
     setCurrentPage(prevPage => prevPage + 1);
@@ -89,9 +90,9 @@ function CorporatePage() {
               <Card.Text as="div">
                   <ul>
                       <li><strong>法人番号</strong>: <a href={`https://info.gbiz.go.jp/hojin/ichiran?hojinBango=${row[1]}`} target="_blank" rel="noreferrer">{row[1]}</a></li>
-                      <li><strong>法人名（カナ）</strong>: {row[30]}</li>
+                      <li><strong>法人名（カナ）</strong>: {row[28]}</li>
                       <li><strong>法人名（英）</strong>: {row[24]}</li>
-                      <li><strong>法人格</strong>: {row[31]}</li>
+                      <li><strong>法人格</strong>: {row[30]}</li>
                       <li><strong>登記日</strong>: {row[5]}</li>
                       <li><strong>最終更新日</strong>: {row[4]}</li>
                       <li><a href={`https://www.google.com/search?q=${row[6]}+${row[9]}`} target="_blank" rel="noreferrer">Google検索</a></li>
@@ -105,7 +106,7 @@ function CorporatePage() {
               <Card.Title>所在地情報</Card.Title>
               <Card.Text as="div">
                   <ul>
-                      <li><strong>郵便番号</strong>: {row[32]}</li>
+                      <li><strong>郵便番号</strong>: {row[15]}</li>
                       <li><strong>住所</strong>: {formatAddress(row[9], row[10], row[11])}</li>
                       <li><strong>住所（アルファベット）</strong>: {formatAddress(row[26], ", ", row[25])}</li>
                   </ul>
@@ -156,7 +157,7 @@ function CorporatePage() {
                 <tr key={rowIndex} onClick={() => handleRowClick(row)}>
                   <td>{row[1]}</td>
                   <td>{row[6]}</td>
-                  <td>{row[32]}</td>
+                  <td>{row[15]}</td>
                   <td>{row[9]}</td>
                   <td>{row[10]}</td>
                   <td>{row[11].length > 30 ? row[11].slice(0, 30) + "..." : row[11]}</td>
